@@ -7,5 +7,5 @@ export interface IComment {
   updatedAt: string;
   author: IUser;
   parentId: number | null;
-  replies: IComment[];
+  replies?: IComment[];
 }

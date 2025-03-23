@@ -1,6 +1,31 @@
+<script setup lang="ts">
+import { RouterLink } from 'vue-router';
+import { MessageCircle } from 'lucide-vue-next';
+import { computed } from 'vue';
+
+// components
+import { Badge } from '@/shared/badge';
+import { Avatar } from '@/shared/avatar';
+import BlogCardDateDisplay from './BlogCardDateDisplay.vue';
+
+// helpers
+import { pathToUrl } from '@/lib/path-to-url';
+import { ROUTER_PATHS } from '@/router/router-path.constants';
+import { cn } from '@/lib/utils';
+import type { IPost } from '@/types/api';
+
+interface IBlogCardInfoProps extends Pick<IPost, 'title' | 'content' | 'author' | 'categories' | 'postedAt' | 'commentsCount' | 'slug'> {
+  size: 'small' | 'medium' | 'large';
+}
+
+const props = defineProps<IBlogCardInfoProps>();
+
+const blogUrl = computed(() => pathToUrl(ROUTER_PATHS.POST.SINGLE.path, { slug: props.slug }));
+</script>
+
 <template>
   <div :class="cn('flex flex-col gap-2 p-4', { 'absolute bottom-0 left-0 right-0 p-10 z-[2] gap-4': props.size === 'large', 'p-0': props.size === 'small' })">
-    <div class="flex items-center gap-3" v-if="props.size !== 'small'">
+    <div class="flex items-center gap-3 mb-2" v-if="props.size !== 'small'">
       <Badge v-for="category in props.categories" :key="category.id">
         {{ category.name }}
       </Badge>
@@ -41,28 +66,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { RouterLink } from 'vue-router';
-import { MessageCircle } from 'lucide-vue-next';
-import { computed } from 'vue';
-
-// components
-import { Badge } from '@/shared/badge';
-import { Avatar } from '@/shared/avatar';
-import BlogCardDateDisplay from './BlogCardDateDisplay.vue';
-
-// helpers
-import { pathToUrl } from '@/lib/path-to-url';
-import { ROUTER_PATHS } from '@/router/router-path.constants';
-import { cn } from '@/lib/utils';
-import type { IPost } from '@/types/api';
-
-interface IBlogCardInfoProps extends Pick<IPost, 'title' | 'content' | 'author' | 'categories' | 'postedAt' | 'commentsCount' | 'slug'> {
-  size: 'small' | 'medium' | 'large';
-}
-
-const props = defineProps<IBlogCardInfoProps>();
-
-const blogUrl = computed(() => pathToUrl(ROUTER_PATHS.POST.SINGLE.path, { slug: props.slug }));
-</script>

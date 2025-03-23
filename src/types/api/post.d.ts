@@ -6,11 +6,12 @@ export interface IPost {
   slug: string;
   title: string;
   content: string;
-  createdAt: string;
-  updatedAt: string;
   postedAt: string;
   commentsCount: number;
   thumbnail: string;
+
+  createdAt: string;
+  updatedAt: string;
   
   author: IUser;
   categories: ICategory[];

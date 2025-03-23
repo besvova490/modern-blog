@@ -6,43 +6,21 @@ import { useRoute } from 'vue-router';
 import { BlogList } from '@/components/blogs-list';
 import { SideBar } from '@/components/side-bar';
 
-const MOCK_POST = {
-  slug: 'slug',
-  title: 'title',
-  content: 'content',
-  createdAt: '2021-01-01',
-  updatedAt: '2021-01-01',
-  postedAt: '2021-01-01',
-  commentsCount: 0,
-  thumbnail: 'https://picsum.photos/720/420',
-  author: {
-    id: 1,
-    name: 'John Doe',
-    email: 'john.doe@example.com',
-    createdAt: '2021-01-01',
-    updatedAt: '2021-01-01',
-    avatar: 'https://via.placeholder.com/150',
-  },
-  categories: [
-    {
-      id: 1,
-      slug: 'category-1',
-      name: 'Category 1',
-      createdAt: '2021-01-01',
-      updatedAt: '2021-01-01',
-    },
-  ],
-};
+// composables
+import { useFetchPosts } from '@/composables/fetcher/useFetchPosts';
+import { useFetchCategory } from '@/composables/fetcher/useFetchCategory';
+// types
+import type { IPost } from '@/types/api';
 
 const route = useRoute();
-watch(route, (newSlug) => {
-  console.log(newSlug, 'route.params.slug');
-  fetchNewPosts();
-});
 
-const fetchNewPosts = async () => {
-  console.log('fetchNewPosts');
-};
+let { data: category } = useFetchCategory(route.params.slug as string);
+let { data, isLoading } = useFetchPosts({ category: route.params.slug });
+
+watch(() => route.params.slug, () => {
+  ({ data: category } = useFetchCategory(route.params.slug as string));
+  ({ data, isLoading } = useFetchPosts({ category: route.params.slug }));
+});
 </script>
 
 <template>
@@ -50,9 +28,11 @@ const fetchNewPosts = async () => {
     <slot name="banner"></slot>
     <div class="grid grid-cols-[1fr_auto] gap-4">
       <BlogList
-        :title="route.params.slug as string"
-        :description="`${route.params.slug} is a category`"
-        :blogs="[MOCK_POST, MOCK_POST, MOCK_POST, MOCK_POST, MOCK_POST]"
+        :title="category?.name as string"
+        :description="route.params.slug ? `${category?.name} is a category` : ''"
+        :blogs="data?.items as IPost[]"
+        :is-loading="isLoading"
+        :has-more="data?.hasNextPage"
       />
       <SideBar />
     </div>

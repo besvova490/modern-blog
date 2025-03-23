@@ -5,7 +5,7 @@ import { Textarea } from '@/shared/textarea';
 import { Avatar } from '@/shared/avatar';
 
 // composables
-import { usePostComment } from '@/composables/form/usePostComment';
+import { usePostComment } from '@/composables/forms/usePostComment';
 
 interface IPostCommentFormProps {
   isReply?: boolean;

@@ -1,14 +1,16 @@
 import { z } from 'zod';
 
 // helpers
-import { useForm } from '@/composables/form/useForm';
+import { useUserProfileStore } from '@/stores/user-profile';
+import { useForm } from '@/composables/forms/useForm';
+import { usersApi } from '@/api/users';
 
 const schema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
   email: z.string().min(1, { message: 'Email is required' }).email({ message: 'Invalid email address' }),
-  bio: z.string().min(1, { message: 'Bio is required' }),
-  location: z.string().min(1, { message: 'Location is required' }),
-  website: z.string().url({ message: 'Invalid URL' }).optional().or(z.literal('')),
+  bio: z.string().optional().nullable(),
+  location: z.string().optional().nullable(),
+  website: z.string().url({ message: 'Invalid URL' }).optional().or(z.literal('')).nullable(),
 });
 
 interface IEditProfileForm {
@@ -28,11 +30,15 @@ const INITIAL_VALUES: IEditProfileForm = {
 };
 
 export const useEditProfileForm = (defaultValues: IEditProfileForm) => {
+  const { initStore } = useUserProfileStore();
+
   const form = useForm({
     initialValues: { ...INITIAL_VALUES, ...defaultValues },
     schema,
     onSubmit: (values) => {
-      console.log(values);
+      usersApi.patchUserProfile(values).then(() => {
+        initStore();
+      });
     },
   });
 

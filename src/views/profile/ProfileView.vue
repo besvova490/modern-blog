@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ref } from 'vue';
 import { RouterView, useRoute } from 'vue-router';
+import { storeToRefs } from 'pinia';
 
 // components
 import { Avatar } from '@/shared/avatar';
@@ -9,21 +10,14 @@ import { Card } from '@/components/card';
 import { Tabs } from '@/shared/tabs';
 
 // helpers
+import { useUserProfileStore } from '@/stores/user-profile';
 import { ROUTER_PATHS } from '@/router/router-path.constants';
-import { type IUser } from '@/types/api';
 
 const isEditing = ref(false);
 
 const route = useRoute();
-
-const USER: IUser = {
-  id: 1,
-  name: 'John Doe',
-  email: 'john.doe@example.com',
-  avatar: 'https://via.placeholder.com/150',
-  createdAt: '2021-01-01',
-  updatedAt: '2021-01-01',
-};
+const userProfileStore = useUserProfileStore();
+const { data } = storeToRefs(userProfileStore);
 
 const NAVIGATION_TABS = [
   {
@@ -45,10 +39,10 @@ const NAVIGATION_TABS = [
   <Card class="mx-auto max-w-[920px]">
     <div class="flex items-center gap-4">
       <Avatar
-        :src="USER.avatar"
+        :src="data?.avatar as string"
         size="lg"
-        :fullName="USER.name"
-        :hint="USER.email"
+        :fullName="data?.name as string"
+        :hint="data?.email as string"
       />
       <Button v-if="!isEditing" class="ml-auto" @click="isEditing = true">Edit Profile</Button>
     </div>

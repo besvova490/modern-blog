@@ -1,9 +1,24 @@
-import { ROUTER_PATHS } from './router-path.constants';
+import type { RouteRecordRaw } from 'vue-router';
 
-export const PROFILE_ROUTES = [
+// helpers
+import { ROUTER_PATHS } from './router-path.constants';
+import { jwtTokens } from '@/lib/jwt-tokens';
+
+export const PROFILE_ROUTES: RouteRecordRaw[] = [
   {
     ...ROUTER_PATHS.PROFILE.ROOT,
     component: () => import('@/views/profile/ProfileView.vue'),
+    meta: {
+      isPrivate: true,
+    },
+    beforeEnter: (_, __, next) => {
+      const { accessToken } = jwtTokens.get();
+      if (!accessToken) {
+        return next({ name: 'not-found' });
+      }
+
+      return next();
+    },
     children: [
       {
         path: '',

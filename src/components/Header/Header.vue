@@ -1,10 +1,13 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
+import { watch, computed } from 'vue';
+import { storeToRefs } from 'pinia';
 
 // components
 import { Button } from '@/shared/button';
-
+import { Avatar } from '@/shared/avatar';
 // helpers
+import { useUserProfileStore } from '@/stores/user-profile';
 import { ROUTER_PATHS } from '@/router/router-path.constants';
 
 
@@ -27,6 +30,8 @@ const NAVIGATION_OPTIONS = [
   },
 ];
 
+const userProfileStore = useUserProfileStore();
+const { data, isAuthenticated } = storeToRefs(userProfileStore);
 </script>
 
 <template>
@@ -44,13 +49,19 @@ const NAVIGATION_OPTIONS = [
           </li>
         </ul>
       </nav>
-      <div class="flex items-center gap-4 ml-auto">
+      <div class="flex items-center gap-4 ml-auto" v-if="!isAuthenticated">
         <Button variant="link" :to="ROUTER_PATHS.AUTH.SIGN_IN.path">
           Login
         </Button>
         |
         <Button variant="link" :to="ROUTER_PATHS.AUTH.SIGN_UP.path">
           Sign Up
+        </Button>
+      </div>
+      <div class="flex items-center gap-4 ml-auto" v-else>
+        <Avatar :src="data?.avatar as string" :fullName="data?.name as string" hide-name />
+        <Button variant="link" @click="userProfileStore.$reset()">
+          Logout
         </Button>
       </div>
     </div>

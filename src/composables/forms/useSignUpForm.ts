@@ -1,7 +1,10 @@
 import { z } from 'zod';
+import { toast } from 'vue-sonner';
 
 // helpers
-import { useForm } from '@/composables/form/useForm';
+import { useForm } from '@/composables/forms/useForm';
+import { authApi } from '@/api/auth';
+import type { IJwtTokens } from '@/types/api';
 
 const schema = z.object({
   name: z.string().min(1, { message: 'Name is required' }),
@@ -20,12 +23,26 @@ const INITIAL_VALUES = {
   confirmPassword: '',
 };
 
-export const useSignUpForm = () => {
+export const useSignUpForm = (props?: { onSubmit?: (values: IJwtTokens) => void }) => {
+  const { onSubmit } = props ?? {};
+
   const form = useForm({
     initialValues: INITIAL_VALUES,
     schema,
     onSubmit: (values) => {
-      console.log(values);
+      authApi.signUp(values)
+        .then((res) => {
+          onSubmit?.(res);
+        })
+        .catch((err) => {
+          if (typeof err.data.message === 'string') {
+            toast.error(err.data.message, {
+              description: 'Please try again',
+              position: 'top-right',
+              richColors: true,
+            });
+          }
+        });
     },
   });
 

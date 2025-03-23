@@ -23,13 +23,12 @@ const props = defineProps<ISingleCommentProps>();
 
 // state
 const isReplying = ref(false);
-
 // methods
 </script>
 
 <template>
   <div class="flex flex-col gap-4 border rounded-lg p-4">
-    <Avatar src="https://github.com/shadcn.png">
+    <Avatar :src="props.comment.author.avatar" :fullName="props.comment.author.name">
       <template #fullName>
         <div class="flex flex-col gap-1">
           {{ props.comment.author.name }}
@@ -48,7 +47,7 @@ const isReplying = ref(false);
           <ThumbsUp/> 12
         </Button>
         <Button variant="ghost">
-          <ThumbsDown/> 2
+          <ThumbsDown/>
         </Button>
         <Button variant="ghost" @click="isReplying = !isReplying" v-if="!props.isReply">
           {{ isReplying ? 'Cancel' : 'Reply' }}
@@ -59,7 +58,7 @@ const isReplying = ref(false);
         isReply
       />
 
-      <div class="flex flex-col gap-2 pl-4 border-l-2 mt-4" v-if="props.comment.replies.length > 0 && !props.isReply">
+      <div class="flex flex-col gap-2 pl-4 border-l-2 mt-4" v-if="props.comment.replies && props.comment.replies.length > 0 && !props.isReply">
         <SingleComment
           v-for="reply in props.comment.replies"
           :key="reply.id"

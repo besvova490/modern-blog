@@ -5,4 +5,7 @@ export interface IUser {
   createdAt: string;
   updatedAt: string;
   avatar: string;
+  bio: string;
+  location: string;
+  website: string;
 }

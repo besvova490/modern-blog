@@ -5,7 +5,7 @@ import { Input } from '@/shared/input';
 import { Card } from '@/components/card';
 
 // helpers
-import { useSubscribeForm } from '@/composables/form/useSubscribeForm';
+import { useSubscribeForm } from '@/composables/forms/useSubscribeForm';
 
 
 const form = useSubscribeForm();

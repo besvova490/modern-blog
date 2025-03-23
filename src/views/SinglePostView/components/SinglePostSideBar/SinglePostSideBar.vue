@@ -58,12 +58,12 @@ const RELATED_POSTS: IPost[] = new Array(3).fill(null).map((_, index) => ({
 <template>
   <div class="flex flex-col gap-4">
     <Card>
-      <Avatar :src="props.author.avatar" class="mx-auto" size="lg"/>
+      <Avatar :src="props.author.avatar" :fullName="props.author.name" class="mx-auto" size="lg" hideName/>
       <div class="flex flex-col gap-1">
         <h4 class="font-bold text-lg">{{ props.author.name }}</h4>
         <p class="text-sm text-muted-foreground mb-4">Senior Web Developer</p>
         <p class="text-sm mb-4">
-          John is a passionate web developer with over 10 years of experience building modern web applications.
+          {{ props.author.bio }}
         </p>
       </div>
       <div class="flex items-center gap-2 w-full">

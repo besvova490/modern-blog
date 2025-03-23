@@ -2,7 +2,7 @@
 import { z } from 'zod';
 
 // composables
-import { useForm } from '@/composables/form/useForm';
+import { useForm } from '@/composables/forms/useForm';
 
 const validationSchema = z.object({
   email: z.string({ invalid_type_error: 'Email is required' }).email().min(1, 'Email is required'),

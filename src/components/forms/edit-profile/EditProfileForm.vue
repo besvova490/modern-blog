@@ -51,6 +51,7 @@ const handleCancel = () => {
       label="Email"
       name="email"
       type="email"
+      disabled
       placeholder="Your email"
     />
 

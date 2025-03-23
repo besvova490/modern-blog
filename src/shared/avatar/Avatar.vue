@@ -14,6 +14,8 @@ const props = withDefaults(defineProps<{
   alt?: string,
   fullName?: string,
   hint?: string,
+  src?: string | null,
+  hideName?: boolean,
 } & AvatarImageProps>(), {
   size: 'sm',
   shape: 'circle',
@@ -25,10 +27,10 @@ const props = withDefaults(defineProps<{
     <AvatarRoot :class="cn(avatarVariant({ size, shape }), props.class)">
       <AvatarImage :src="props.src" :alt="props.alt" />
       <AvatarFallback>
-        {{ fullName?.slice(0, 2) }}
+        {{ fullName?.slice(0, 2).toUpperCase() }}
       </AvatarFallback>
     </AvatarRoot>
-    <div class="flex flex-col gap-1" v-if="!!slots.fullName || !!fullName">
+    <div class="flex flex-col gap-1" v-if="!props.hideName && (slots.fullName || fullName)">
       <slot name="fullName" />
       <span :class="cn('font-medium text-muted-foreground', { 'text-foreground text-2xl': size === 'lg' })" v-if="!slots.fullName">{{ fullName }}</span>
       <span :class="cn('text-sm font-medium text-muted-foreground', { 'text-foreground text-xl': size === 'lg' })" v-if="hint" class="text-xs text-muted-foreground">{{ hint }}</span>

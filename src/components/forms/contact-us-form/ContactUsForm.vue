@@ -6,7 +6,7 @@ import { Button } from '@/shared/button';
 import { Card } from '@/components/card';
 
 // helpers
-import { useContactUsForm } from '@/composables/form/useContactUsForm';
+import { useContactUsForm } from '@/composables/forms/useContactUsForm';
 
 const form = useContactUsForm();
 </script>
