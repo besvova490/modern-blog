@@ -1,6 +1,6 @@
 // helpers
-import { IUser } from './user';
-import { ICategory } from './category';
+import { IUser } from './user.d';
+import { ICategory } from './category.d';
 
 export interface IPost {
   slug: string;

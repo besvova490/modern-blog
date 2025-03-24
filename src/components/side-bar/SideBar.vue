@@ -9,7 +9,7 @@ import { Badge } from '@/shared/badge';
 import { Card } from '@/components/card';
 
 // helpers
-import { type IPost, type ICategory } from '@/types/api';
+import { type IPost, type ICategory, type IUser } from '@/types/api';
 import { useFetchCategories } from '@/composables/fetcher/useFetchCategories';
 
 const { data: categories } = useFetchCategories();
@@ -32,7 +32,7 @@ const POPULAR_POSTS: IPost[] = [
       email: 'john.doe@example.com',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    },
+    } as IUser,
   },
   {
     title: 'Post 2',
@@ -51,7 +51,7 @@ const POPULAR_POSTS: IPost[] = [
       email: 'john.doe@example.com',
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
-    },
+    } as IUser,
   },
 ];
 
