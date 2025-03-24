@@ -15,7 +15,7 @@ const route = useRoute();
 
 const userProfileStore = useUserProfileStore();
 const { data: comments, refetch } = useFetchPostComments(route.params.slug as string);
-const { isAuthenticated, data: user } = storeToRefs(userProfileStore);
+const { isAuthenticated } = storeToRefs(userProfileStore);
 </script>
 
 <template>

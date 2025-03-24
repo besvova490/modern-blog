@@ -10,7 +10,7 @@ import { Card } from '@/components/card';
 // helpers
 import { pathToUrl } from '@/lib/path-to-url';
 import { ROUTER_PATHS } from '@/router/router-path.constants';
-import { type IUser, type TResentPost } from '@/types/api';
+import { type IUser } from '@/types/api';
 import { useFetchSingleUser } from '@/composables/fetcher/useFetchSingleUser';
 import { useFetchPosts } from '@/composables/fetcher/useFetchPosts';
 

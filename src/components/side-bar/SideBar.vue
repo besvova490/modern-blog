@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import { computed, watch } from 'vue';
+import { computed } from 'vue';
 
 // components
 import { BlogCard } from '../blog-card';
