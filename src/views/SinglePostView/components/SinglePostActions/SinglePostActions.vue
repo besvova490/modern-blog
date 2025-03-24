@@ -4,6 +4,11 @@ import { Link, MessageCircle, Facebook, Twitter, Linkedin } from 'lucide-vue-nex
 // components
 import { Button } from '@/shared/button';
 
+defineProps<{
+  commentsCount: number;
+  likesCount: number;
+}>();
+
 const SHARE_LINKS = [
   {
     href: 'https://www.facebook.com/sharer/sharer.php?u=https://www.google.com',
@@ -26,11 +31,11 @@ const SHARE_LINKS = [
     <div class="flex items-center gap-2">
       <Button variant="ghost">
         <Link :size="16" />
-        Like (123)
+        Like ({{ likesCount }})
       </Button>
       <Button variant="ghost">
         <MessageCircle :size="16" />
-        Comment (123)
+        Comment ({{ commentsCount }})
       </Button>
     </div>
 

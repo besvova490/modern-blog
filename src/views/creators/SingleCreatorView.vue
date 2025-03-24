@@ -1,65 +1,49 @@
 <script setup lang="ts">
 import { MapPin, Link, Calendar } from 'lucide-vue-next';
-import { RouterLink } from 'vue-router';
-
+import { RouterLink, useRoute } from 'vue-router';
+import { computed } from 'vue';
 // components
+import { Skeleton } from '@/shared/skeleton';
 import { CreatorCard } from '@/components/creator-card';
 import { Card } from '@/components/card';
 
 // helpers
 import { pathToUrl } from '@/lib/path-to-url';
 import { ROUTER_PATHS } from '@/router/router-path.constants';
-import { type ICreator, type TResentPost } from '@/types/api';
+import { type IUser, type TResentPost } from '@/types/api';
+import { useFetchSingleUser } from '@/composables/fetcher/useFetchSingleUser';
+import { useFetchPosts } from '@/composables/fetcher/useFetchPosts';
 
+const route = useRoute();
+const { data: creator, isLoading: isCreatorLoading } = useFetchSingleUser(route.params.id as string);
+const { data: posts, isLoading: isPostsLoading } = useFetchPosts({
+  authorId: route.params.id as string,
+  perPage: 3,
+});
 
-const MOCK_CREATOR: ICreator = {
-  id: 2,
-  name: 'Jane Doe',
-  username: 'jane.doe1',
-  email: 'jane.doe@example.com',
-  avatar: 'https://github.com/shadcn.png',
-  createdAt: '2021-01-01',
-  updatedAt: '2021-01-01',
-  followersCount: 100,
-  postsCount: 100,
-  bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-};
+const recentPosts = computed(() => posts?.value?.items || []);
 
-const CREATOR_FOOTER_INFO = [
+const CREATOR_FOOTER_INFO = computed(() => [
   {
-    value: 'New York, NY',
+    value: creator.value?.location,
     icon: MapPin,
   },
   {
-    value: 'jane.doe@example.com',
+    value: creator.value?.email,
     icon: Link,
   },
   {
-    value: 'Joined on 2021-01-01',
+    value: `Joined on ${creator.value?.createdAt}`,
     icon: Calendar,
   },
-];
-
-const RESENT_POSTS: TResentPost[] = [
-  {
-    slug: 'post-1',
-    title: 'Post 1',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    postedAt: '2021-01-01',
-  },
-  {
-    slug: 'post-2',
-    title: 'Post 2',
-    content: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-    postedAt: '2021-01-01',
-  },
-];
+].filter(item => item.value));
 </script>
 
 <template>
-  <div class="flex flex-col gap-8">
+  <Skeleton v-if="isCreatorLoading || isPostsLoading" class="w-full h-full" />
+  <div v-else class="flex flex-col gap-8">
     <CreatorCard
-      :creator="MOCK_CREATOR"
+      :creator="creator as IUser"
       variant="banner"
     >
       <template #footer>
@@ -72,14 +56,14 @@ const RESENT_POSTS: TResentPost[] = [
       </template>
     </CreatorCard>
     <Card>
-      <ul class="flex flex-col gap-6">
-        <li v-for="(post, index) in RESENT_POSTS" :key="index" class="flex flex-col gap-1">
+      <ul class="flex flex-col gap-6" v-if="recentPosts.length > 0">
+        <li v-for="(post, index) in recentPosts" :key="index" class="flex flex-col gap-1">
           <RouterLink :to="pathToUrl(ROUTER_PATHS.POST.SINGLE.path, { slug: post.slug })" class="text-lg font-bold w-max">{{ post.title }}</RouterLink>
           <p>{{ post.content }}</p>
           <p class="text-xs text-muted-foreground">Published on {{ post.postedAt }}</p>
         </li>
       </ul>
-
+      <p v-else class="text-center text-muted-foreground">No posts found</p>
     </Card>
   </div>
 </template>

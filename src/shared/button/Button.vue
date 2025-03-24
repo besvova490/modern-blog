@@ -7,7 +7,7 @@ import { RouterLink, type RouterLinkProps } from 'vue-router';
 import { cn } from '@/lib/utils';
 import { type ButtonVariants, buttonVariants } from '.';
 
-interface Props extends PrimitiveProps {
+export interface Props extends PrimitiveProps {
   variant?: ButtonVariants['variant'];
   size?: ButtonVariants['size'];
   class?: HTMLAttributes['class'];

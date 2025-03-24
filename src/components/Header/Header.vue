@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { RouterLink } from 'vue-router';
-import { watch, computed } from 'vue';
 import { storeToRefs } from 'pinia';
 
 // components
@@ -59,7 +58,9 @@ const { data, isAuthenticated } = storeToRefs(userProfileStore);
         </Button>
       </div>
       <div class="flex items-center gap-4 ml-auto" v-else>
-        <Avatar :src="data?.avatar as string" :fullName="data?.name as string" hide-name />
+        <RouterLink :to="ROUTER_PATHS.PROFILE.ROOT.path">
+          <Avatar :src="data?.avatar as string" :fullName="data?.name as string" hide-name />
+        </RouterLink>
         <Button variant="link" @click="userProfileStore.$reset()">
           Logout
         </Button>

@@ -34,7 +34,7 @@ const POST_META_INFO = computed(() => [
   },
   {
     icon: MessageCircle,
-    value: '12 comments'
+    value: `${data.value?.commentsCount} comments`
   }
 ]);
 
@@ -64,7 +64,10 @@ const POST_META_INFO = computed(() => [
         <div v-html="data.content" />
       </div>
       <div class="flex flex-col gap-4">
-        <SinglePostActions />
+        <SinglePostActions
+          :comments-count="data?.commentsCount"
+          :likes-count="0"
+        />
         <Comments/>
       </div>
     </article>

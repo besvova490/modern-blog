@@ -3,39 +3,12 @@
 import { Input } from '@/shared/input';
 import { CreatorCard } from '@/components/creator-card';
 
-// types
-import type { ICreator } from '@/types/api';
+// helpers
+import { useFetchUsers } from '@/composables/fetcher/useFetchUsers';
 import { ROUTER_PATHS } from '@/router/router-path.constants';
 import { pathToUrl } from '@/lib/path-to-url';
 
-
-const MOCK_CREATORS: ICreator[] = [
-  {
-    id: 1,
-    name: 'John Doe',
-    username: 'john.doe',
-    email: 'john.doe@example.com',
-    avatar: 'https://github.com/shadcn.png',
-    createdAt: '2021-01-01',
-    updatedAt: '2021-01-01',
-    followersCount: 100,
-    postsCount: 100,
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-  {
-    id: 2,
-    name: 'Jane Doe',
-    username: 'jane.doe1',
-    email: 'jane.doe@example.com',
-    avatar: 'https://github.com/shadcn.png',
-    createdAt: '2021-01-01',
-    updatedAt: '2021-01-01',
-    followersCount: 100,
-    postsCount: 100,
-    bio: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit.',
-  },
-];
-
+const { data } = useFetchUsers();
 </script>
 
 <template>
@@ -44,10 +17,10 @@ const MOCK_CREATORS: ICreator[] = [
     <Input placeholder="Search for a creator" class="w-full" />
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
       <CreatorCard
-        v-for="creator in MOCK_CREATORS"
+        v-for="creator in data"
         :key="creator.id"
         :creator="creator"
-        :to="pathToUrl(ROUTER_PATHS.CREATORS.SINGLE.path, { userName: creator.username })"
+        :to="pathToUrl(ROUTER_PATHS.CREATORS.SINGLE.path, { id: creator.id.toString() })"
       />
     </div>
   </div>

@@ -24,7 +24,7 @@ const blogUrl = computed(() => pathToUrl(ROUTER_PATHS.POST.SINGLE.path, { slug: 
 </script>
 
 <template>
-  <div :class="cn('flex flex-col gap-2 p-4', { 'absolute bottom-0 left-0 right-0 p-10 z-[2] gap-4': props.size === 'large', 'p-0': props.size === 'small' })">
+  <div :class="cn('flex flex-1 flex-col gap-2 p-4', { 'absolute bottom-0 left-0 right-0 p-10 z-[2] gap-4': props.size === 'large', 'p-0': props.size === 'small' })">
     <div class="flex items-center gap-3 mb-2" v-if="props.size !== 'small'">
       <Badge v-for="category in props.categories" :key="category.id">
         {{ category.name }}
@@ -36,9 +36,9 @@ const blogUrl = computed(() => pathToUrl(ROUTER_PATHS.POST.SINGLE.path, { slug: 
       </h2>
     </RouterLink>
     <p :class="cn({ 'text-sm text-gray-500': props.size === 'medium' })" v-if="props.size !== 'small'">
-      {{ props.content }}
+      {{ props.size === 'large' ? props.content : props.content.slice(0, 150) }}
     </p>
-    <div class="flex items-center justify-between">
+    <div class="flex items-center justify-between mt-auto">
       <template v-if="props.size === 'large'">
         <div class="flex items-center gap-2 text-sm">
           <BlogCardDateDisplay :date="props.postedAt" />

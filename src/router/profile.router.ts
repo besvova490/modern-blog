@@ -33,6 +33,22 @@ export const PROFILE_ROUTES: RouteRecordRaw[] = [
         ...ROUTER_PATHS.PROFILE.FOLLOWING,
         component: () => import('@/views/profile/ProfileFollowingView.vue'),
       },
+      {
+        ...ROUTER_PATHS.PROFILE.ACTIVITY.MY_POSTS.ROOT,
+        component: () => import('@/views/profile/posts/PostsListView/PostsListView.vue'),
+      },
+      {
+        ...ROUTER_PATHS.PROFILE.ACTIVITY.MY_POSTS.CREATE,
+        component: () => import('@/views/profile/posts/AddEditPostView.vue'),
+      },
+      {
+        ...ROUTER_PATHS.PROFILE.ACTIVITY.MY_POSTS.SINGLE,
+        component: () => import('@/views/profile/posts/AddEditPostView.vue'),
+      },
+      {
+        ...ROUTER_PATHS.PROFILE.ACTIVITY.MY_COMMENTS,
+        component: () => import('@/views/profile/MyComments.vue'),
+      },
     ],
   },
 ];

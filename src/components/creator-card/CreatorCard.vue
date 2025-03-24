@@ -10,11 +10,11 @@ import { Card } from '@/components/card';
 
 // helpers
 import { cn } from '@/lib/utils';
-import type { ICreator } from '@/types/api';
+import type { IUser } from '@/types/api';
 
 // props
 const props = withDefaults(defineProps<{
-  creator: ICreator;
+  creator: IUser;
   variant?: 'banner' | 'compact';
   to?: string;
 }>(), {
@@ -28,19 +28,23 @@ const Wrapper = computed(() => props.to ? RouterLink : 'div');
   <component :is="Wrapper" :to="to">
     <Card>
       <div class="flex items-start justify-between gap-2">
-        <Avatar :src="creator.avatar" :size="props.variant === 'banner' ? 'lg' : 'sm'">
+        <Avatar
+          :src="creator.avatar"
+          :size="props.variant === 'banner' ? 'lg' : 'sm'"
+          :fullName="creator.name"
+        >
           <template #fullName>
             <div class="flex flex-col gap-2 ml-4">
               <p :class="cn('text-lg leading-1 text-white', { 'text-3xl': props.variant === 'banner' })">{{ creator.name }}</p>
-              <span :class="cn('text-sm text-muted-foreground', { 'text-lg': props.variant === 'banner' })">@{{ creator.username }}</span>
+              <span :class="cn('text-sm text-muted-foreground', { 'text-lg': props.variant === 'banner' })">@{{ creator.name }}</span>
               <slot v-if="props.variant === 'banner'">
                 <p class="text-lg text-white">
                   {{ creator.bio }}
                 </p>
                 <slot name="footer" v-if="props.variant === 'banner'">
                   <div class="flex items-center justify-between gap-2 text-muted-foreground text-lg">
-                    <span>{{ creator.followersCount }} followers</span>
-                    <span>{{ creator.postsCount }} posts</span>
+                    <span>{{ creator.followers }} followers</span>
+                    <span>{{ creator.blogPostsCount }} posts</span>
                   </div>
                 </slot>
               </slot>
@@ -57,8 +61,8 @@ const Wrapper = computed(() => props.to ? RouterLink : 'div');
       </p>
       <slot name="footer" v-if="props.variant === 'compact'">
         <div class="flex items-center justify-between gap-2 text-sm text-muted-foreground">
-          <span>{{ creator.followersCount }} followers</span>
-          <span>{{ creator.postsCount }} posts</span>
+          <span>{{ creator.followers }} followers</span>
+          <span>{{ creator.blogPostsCount }} posts</span>
         </div>
       </slot>
     </Card>

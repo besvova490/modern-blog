@@ -17,13 +17,24 @@ import { type IComment } from '@/types/api';
 interface ISingleCommentProps {
   comment: IComment;
   isReply?: boolean;
+  canReply?: boolean;
+  slug: string;
 }
+
+const emit = defineEmits<{
+  (e: 'onReply'): void;
+}>();
 
 const props = defineProps<ISingleCommentProps>();
 
 // state
 const isReplying = ref(false);
+
 // methods
+const handleReply = () => {
+  isReplying.value = false;
+  emit('onReply');
+};
 </script>
 
 <template>
@@ -49,13 +60,16 @@ const isReplying = ref(false);
         <Button variant="ghost">
           <ThumbsDown/>
         </Button>
-        <Button variant="ghost" @click="isReplying = !isReplying" v-if="!props.isReply">
+        <Button variant="ghost" @click="isReplying = !isReplying" v-if="!props.isReply && props.canReply">
           {{ isReplying ? 'Cancel' : 'Reply' }}
         </Button>
       </div>
       <PostCommentForm
         v-if="isReplying && !props.isReply"
-        isReply
+        :slug="props.slug"
+        :parent-id="props.comment.id"
+        @on-submit="handleReply"
+        @on-cancel="isReplying = false"
       />
 
       <div class="flex flex-col gap-2 pl-4 border-l-2 mt-4" v-if="props.comment.replies && props.comment.replies.length > 0 && !props.isReply">
@@ -65,6 +79,8 @@ const isReplying = ref(false);
           :comment="reply"
           class="border-none !p-0"
           isReply
+          @on-reply="emit('onReply')"
+          :slug="props.slug"
         />
       </div>
     </div>

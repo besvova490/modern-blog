@@ -18,7 +18,7 @@ const props = withDefaults(defineProps<IBlogCardProps>(), { size: 'medium' });
 
 
 <template>
-  <div :class="cn('blog-card w-full h-full relative overflow-hidden', { 'after:absolute after:inset-0 after:bg-black/50 rounded-xl': props.size === 'large', 'rounded-xl border': props.size === 'medium', 'flex gap-4': props.size === 'small' })">
+  <div :class="cn('blog-card w-full h-full relative overflow-hidden flex flex-col', { 'after:absolute after:inset-0 after:bg-black/50 rounded-xl': props.size === 'large', 'rounded-xl border': props.size === 'medium', 'gap-4 flex-row': props.size === 'small' })">
     <template v-if="props.isLoading">
       <Skeleton class="w-full h-full" />
     </template>

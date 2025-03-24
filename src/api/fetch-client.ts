@@ -18,9 +18,8 @@ const refreshToken = async () => {
   }
 
   try {
-    const response = await fetchClient.post(API_ENDPOINTS.AUTH.REFRESH_TOKEN, { token: refreshToken });
-
-    jwtTokens.set(response.data.accessToken, response.data.refreshToken);
+    const response = await fetchClient.post(API_ENDPOINTS.AUTH.REFRESH_TOKEN, { token: refreshToken }) as { accessToken: string };
+    jwtTokens.set(response.accessToken);
 
     return response;
   } catch (error) {

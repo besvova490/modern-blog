@@ -17,6 +17,10 @@ export const PROFILE_PATHS = {
         path: '/profile/activity/posts/:slug',
         name: 'profile-activity-post',
       },
+      CREATE: {
+        path: '/profile/activity/posts/create',
+        name: 'profile-activity-post-create',
+      },
     },
     MY_COMMENTS: {
       path: '/profile/activity/comments',
@@ -46,7 +50,7 @@ export const ROUTER_PATHS = {
       name: 'creators',
     },
     SINGLE: {
-      path: '/creators/:userName',
+      path: '/creators/:id',
       name: 'single-creator',
     }
   },

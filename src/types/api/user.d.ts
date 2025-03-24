@@ -8,4 +8,6 @@ export interface IUser {
   bio: string;
   location: string;
   website: string;
+  blogPostsCount: number;
+  followers: number;
 }

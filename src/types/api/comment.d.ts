@@ -8,4 +8,8 @@ export interface IComment {
   author: IUser;
   parentId: number | null;
   replies?: IComment[];
+  blogPost: {
+    title: string;
+    slug: string;
+  };
 }
