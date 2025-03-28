@@ -59,7 +59,7 @@ const CREATOR_FOOTER_INFO = computed(() => [
       <ul class="flex flex-col gap-6" v-if="recentPosts.length > 0">
         <li v-for="(post, index) in recentPosts" :key="index" class="flex flex-col gap-1">
           <RouterLink :to="pathToUrl(ROUTER_PATHS.POST.SINGLE.path, { slug: post.slug })" class="text-lg font-bold w-max">{{ post.title }}</RouterLink>
-          <p>{{ post.content }}</p>
+          <p>{{ post.content?.length > 100 ? post.content.slice(0, 100) + '...' : post.content }}</p>
           <p class="text-xs text-muted-foreground">Published on {{ post.postedAt }}</p>
         </li>
       </ul>

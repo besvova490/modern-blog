@@ -6,27 +6,30 @@ import { storeToRefs } from 'pinia';
 import { PostCommentForm } from '@/components/forms/post-comment-form';
 import SingleComment from './SingleComment.vue';
 
-// composables
+// helpers
+import { API_ENDPOINTS } from '@/api/api-endpoints.constants'; 
+import { useSubscribeToSSE } from '@/composables/useSubscribeToSSE';
 import { useFetchPostComments } from '@/composables/fetcher/useFetchPostComments';
 import { useUserProfileStore } from '@/stores/user-profile';
-
+import { pathToUrl } from '@/lib/path-to-url';
 
 const route = useRoute();
 
 const userProfileStore = useUserProfileStore();
 const { data: comments, refetch } = useFetchPostComments(route.params.slug as string);
 const { isAuthenticated } = storeToRefs(userProfileStore);
-</script>
 
+useSubscribeToSSE({
+  url: pathToUrl(API_ENDPOINTS.BLOG_POSTS.SUBSCRIBE_TO_COMMENTS, { slug: route.params.slug as string }),
+  onMessage: () => refetch(),
+});
+</script>
 <template>
   <div class="flex flex-col gap-4">
     <h5 class="text-lg font-bold">
       Comments ({{ comments?.length || 0 }})
     </h5>
-    <PostCommentForm
-      :slug="route.params.slug as string"
-      @on-submit="refetch"
-    />
+    <PostCommentForm :slug="route.params.slug as string"/>
     <div class="flex items-start gap-2">
     </div>
     <div class="flex flex-col gap-4">
@@ -36,7 +39,6 @@ const { isAuthenticated } = storeToRefs(userProfileStore);
         :comment="comment"
         :can-reply="!!isAuthenticated"
         :slug="route.params.slug as string"
-        @on-reply="refetch"
       />
     </div>
   </div>

@@ -14,6 +14,7 @@ export const API_ENDPOINTS = {
     ROOT: '/blog-posts',
     SINGLE: '/blog-posts/:slug',
     COMMENTS: '/blog-posts/:slug/comments',
+    SUBSCRIBE_TO_COMMENTS: '/blog-posts/:slug/comments/subscribe',
   },
   CATEGORIES: {
     ROOT: '/categories',

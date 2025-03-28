@@ -57,7 +57,7 @@ const Wrapper = computed(() => props.to ? RouterLink : 'div');
         </Button>
       </div>
       <p v-if="props.variant === 'compact'">
-        {{ creator.bio }}
+        {{ creator.bio?.length > 100 ? creator.bio.slice(0, 100) + '...' : creator.bio }}
       </p>
       <slot name="footer" v-if="props.variant === 'compact'">
         <div class="flex items-center justify-between gap-2 text-sm text-muted-foreground">
